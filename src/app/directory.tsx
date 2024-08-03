@@ -23,7 +23,7 @@ const Directory: React.FC = () => {
     const [editingContact, setEditingContact] = useState<Contact | null>(null);
 
     useEffect(() => {
-        fetch('/api/contacts')
+        fetch(`${process.env.ITMD_504_BE_API_URL}/contacts`)
             .then((res) => res.json())
             .then((data) => setContacts(data))
             .catch((err) => console.error(err));
@@ -31,7 +31,7 @@ const Directory: React.FC = () => {
 
     const onSubmit = async (data: Contact) => {
         if (editingContact) {
-            await fetch(`/api/contacts/${editingContact.id}`, {
+            await fetch(`${process.env.ITMD_504_BE_API_URL}/contacts/${editingContact.id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data),
@@ -43,7 +43,7 @@ const Directory: React.FC = () => {
             );
             setEditingContact(null);
         } else {
-            const response = await fetch('/api/contacts', {
+            const response = await fetch(`${process.env.ITMD_504_BE_API_URL}/contacts`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data),
@@ -60,12 +60,12 @@ const Directory: React.FC = () => {
     };
 
     const deleteContact = async (id: string) => {
-        await fetch(`/api/contacts/${id}`, {method: 'DELETE'});
+        await fetch(`${process.env.ITMD_504_BE_API_URL}/contacts/${id}`, {method: 'DELETE'});
         setContacts((prev) => prev.filter((contact) => contact.id !== id));
     };
 
     const refreshContacts = async () => {
-        const response = await fetch('/api/contacts');
+        const response = await fetch(`${process.env.ITMD_504_BE_API_URL}/contacts`);
         const data = await response.json();
         setContacts(data);
     };
